@@ -1,0 +1,28 @@
+# 4 math functions: ADD, SUB, MULT, and DIV
+# 3 print functions:
+#	PRINTS - Prints a string which is taken as an arg
+#	PRINTF - Prints the value of the line following it
+#	PRINTV - Prints the value of an variable by name which is taken as an arg
+# 3 mem functions:
+#	MOV - Copies a variables value to another variable. If the variable exists, the value will be copied over. If it doesn't, it creates a new variable.
+#	SETVAR - Sets a variable by name and has 2 args, a string of the name and a int as the value
+#	SETVAR - Sets a variable by name to the value of the expression in the line following and has 1 arg, a string of the name
+
+PRINTF
+ADD 5 5
+PRINTF
+SUB 5 5
+PRINTF
+MULT 5 5
+PRINTF
+DIV 5 5
+PRINTS ScriptyOnTop!
+SETVAR Test 1
+PRINTV Test
+
+SETVARF Test2
+ADD 15 15
+PRINTV Test2
+
+MOV Test2 Test3
+PRINTV Test3
