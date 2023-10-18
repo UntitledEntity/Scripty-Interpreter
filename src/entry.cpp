@@ -15,6 +15,7 @@
 #define SETVAR_KEYWORD "SETVAR"
 #define SETVARF_KEYWORD "SETVARF"
 #define MOV_KEYWORD "MOV"
+#define REPEAT_KEYWORD "REPEAT"
 
 enum CmdCodes {
     Add,
@@ -27,6 +28,7 @@ enum CmdCodes {
     SetVar,
     SetVarF,
     Move,
+    Repeat,
     Invalid
 };
 
@@ -41,6 +43,7 @@ CmdCodes HashCmd( std::string const& in ) {
     if ( in == SETVAR_KEYWORD ) return SetVar;
     if ( in == SETVARF_KEYWORD ) return SetVarF;
     if ( in == MOV_KEYWORD ) return Move;
+    if ( in == REPEAT_KEYWORD ) return Repeat;
 
     return Invalid;
 }
@@ -134,14 +137,26 @@ int main( int argc, char* argv[ ] )
             static bool print_line = false;
             static bool set_to_var = false;
             static std::string var_name_to_set = "";
+            
+            static int amt_to_repeat = 1;
+            static int repeat_times = 0;
 
             // Switching the hash of the name is supposedly faster than checking the strings manually, but I don't see why it would have any difference.
             // Not really worrying about execution time as its extremely simple
             switch ( HashCmd( curcmd ) ) {
+            case CmdCodes::Repeat: {
+                amt_to_repeat = atoi( args.at( 0 ).c_str( ) );
+            } break;
             case CmdCodes::Add: {
-                int a = atoi( args.at( 0 ).c_str() );
-                int b = atoi( args.at( 1 ).c_str( ) );
-                int val = a + b;
+                int val = 0;
+
+                for ( ; repeat_times < amt_to_repeat; ++repeat_times ) {
+
+                    int a = atoi( args.at( 0 ).c_str( ) );
+                    int b = atoi( args.at( 1 ).c_str( ) );
+                    val += a + b;
+                }
+          
                 if ( print_line ) {
                     std::cout << val << std::endl;
                     print_line = false;
@@ -152,12 +167,20 @@ int main( int argc, char* argv[ ] )
                     var_name_to_set = "";
                     set_to_var = false;
                 }
+
+                repeat_times = 0;
+                amt_to_repeat = 1;
+
 
             } break;
             case CmdCodes::Sub: {
-                int a = atoi( args.at( 0 ).c_str( ) );
-                int b = atoi( args.at( 1 ).c_str( ) );
-                int val = a - b;
+                int val = 0;
+                for ( ; repeat_times < amt_to_repeat; ++repeat_times ) {
+
+                    int a = atoi( args.at( 0 ).c_str( ) );
+                    int b = atoi( args.at( 1 ).c_str( ) );
+                    val += a - b;
+                }
 
                 if ( print_line ) {
                     std::cout << val << std::endl;
@@ -169,11 +192,18 @@ int main( int argc, char* argv[ ] )
                     var_name_to_set = "";
                     set_to_var = false;
                 }
+
+                repeat_times = 0;
+                amt_to_repeat = 1;
             } break;
             case CmdCodes::Div: {
-                int a = atoi( args.at( 0 ).c_str( ) );
-                int b = atoi( args.at( 1 ).c_str( ) );
-                int val = a / b;
+                int val = 0;
+                for ( ; repeat_times < amt_to_repeat; ++repeat_times ) {
+
+                    int a = atoi( args.at( 0 ).c_str( ) );
+                    int b = atoi( args.at( 1 ).c_str( ) );
+                    val += a / b;
+                }
 
                 if ( print_line ) {
                     std::cout << val << std::endl;
@@ -186,11 +216,17 @@ int main( int argc, char* argv[ ] )
                     set_to_var = false;
                 }
 
+                repeat_times = 0;
+                amt_to_repeat = 1;
             } break;
             case CmdCodes::Mult: {
-                int a = atoi( args.at( 0 ).c_str( ) );
-                int b = atoi( args.at( 1 ).c_str( ) );
-                int val = a * b;
+                int val = 0;
+                for ( ; repeat_times < amt_to_repeat; ++repeat_times ) {
+
+                    int a = atoi( args.at( 0 ).c_str( ) );
+                    int b = atoi( args.at( 1 ).c_str( ) );
+                    val += a * b;
+                }
 
                 if ( print_line ) {
                     std::cout << val << std::endl;
@@ -202,6 +238,9 @@ int main( int argc, char* argv[ ] )
                     var_name_to_set = "";
                     set_to_var = false;
                 }
+
+                repeat_times = 0;
+                amt_to_repeat = 1;
             } break;
             case CmdCodes::SetVar: {
                 std::string a = args.at( 0 );
@@ -252,8 +291,10 @@ int main( int argc, char* argv[ ] )
                 var_name_to_set = args.at( 0 );
             } break;
             case CmdCodes::PrintS: {
-                std::string a = args.at( 0 );
-                std::cout << a << std::endl;
+                for ( ; repeat_times < amt_to_repeat; ++repeat_times ) {
+                    std::string a = args.at( 0 );
+                    std::cout << a << std::endl;
+                }
             } break;
             case CmdCodes::PrintF: {
                 print_line = true;
