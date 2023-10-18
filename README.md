@@ -19,3 +19,6 @@ It has four core math functions, three printing, and three memory-based function
 -	MOV - Copies the value of a variable to another variable. If the variable exists, the value will be copied over. If it doesn't, it creates a new variable.
 -	SETVAR - Sets a variable by name and has two args, a string of the name, and an integer as the value
 -	SETVAR - Sets a variable by name to the value of the expression in the line following and has one arg, a string of the name
+
+<b>1 misc function</b>
+- REPEAT - Repeats a given number of times, taken as an arg.
